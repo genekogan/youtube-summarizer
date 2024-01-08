@@ -11,3 +11,9 @@ Downloads with yt_dlp, sends audio to OpenAI whisper for transcription, then sum
 Put your OpenAI key in .env and run:
 
     python summarizer.py "YOUTUBE_VIDEO_URL" NUMBER_OF_BULLET_POINTS
+
+## Improvements
+
+ - [ ] CLI
+ - [ ] Add video metadata/description to transcript
+ - [ ] Use local models
