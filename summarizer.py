@@ -46,7 +46,7 @@ def summarize_youtube(url, num_bullet_points):
         'ffmpeg',
         '-i', audio_filename + ".mp3",  # Input file
         '-ac', '1',                     # Set audio channels to 1 (mono)
-        '-ab', '64k',                   # Set a lower bitrate, e.g., 32 kbps
+        '-ab', '32k',                   # Set a lower bitrate, e.g., 32 kbps
         '-y',                           # Overwrite output file if it exists
         audio_filename + "_mono.mp3"    # Output file
     ]
