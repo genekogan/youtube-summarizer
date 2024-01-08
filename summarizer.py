@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+import subprocess
 import argparse
 import os
 import uuid
@@ -41,18 +42,31 @@ def summarize_youtube(url, num_bullet_points):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
     
+    command = [
+        'ffmpeg',
+        '-i', audio_filename + ".mp3",  # Input file
+        '-ac', '1',                     # Set audio channels to 1 (mono)
+        '-ab', '64k',                   # Set a lower bitrate, e.g., 32 kbps
+        '-y',                           # Overwrite output file if it exists
+        audio_filename + "_mono.mp3"    # Output file
+    ]
+
+
+    subprocess.run(command)
+
     #whisper_model = whisper.load_model('base')
-    #result = whisper_model.transcribe(audio_filename+".mp3")
+    #result = whisper_model.transcribe(audio_filename+"_mono.mp3")
     #transcript = result['text']
 
-    audio_file = open(audio_filename+".mp3", "rb")
+    audio_file = open(audio_filename+"_mono.mp3", "rb")
 
     transcript = client.audio.transcriptions.create(
         model="whisper-1", 
         file=audio_file
     )
 
-    #os.remove(audio_filename+".mp3")
+    os.remove(audio_filename+".mp3")
+    os.remove(audio_filename+"_mono.mp3")
 
     response = client.chat.completions.create(
         model="gpt-4-1106-preview",
