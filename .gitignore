@@ -1,0 +1,6 @@
+.env
+*.part
+*.ytdl
+*.mp3
+*.wav
+.DS_Store

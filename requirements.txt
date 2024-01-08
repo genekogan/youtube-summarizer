@@ -1,0 +1,6 @@
+dotenv
+requests
+json
+urllib
+openai
+yt_dlp
