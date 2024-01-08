@@ -28,6 +28,7 @@ def pretty_print(text, width):
 
 def summarize_youtube(url, num_bullet_points):
     
+    # Download from YouTube
     ydl_opts = {
         'outtmpl': audio_filename,
         'format': 'worstaudio',
@@ -42,6 +43,7 @@ def summarize_youtube(url, num_bullet_points):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
     
+    # Convert to mono
     command = [
         'ffmpeg',
         '-i', audio_filename + ".mp3",  # Input file
@@ -51,9 +53,9 @@ def summarize_youtube(url, num_bullet_points):
         audio_filename + "_mono.mp3"    # Output file
     ]
 
-
     subprocess.run(command)
 
+    # Transcribe with Whisper
     #whisper_model = whisper.load_model('base')
     #result = whisper_model.transcribe(audio_filename+"_mono.mp3")
     #transcript = result['text']
@@ -65,9 +67,11 @@ def summarize_youtube(url, num_bullet_points):
         file=audio_file
     )
 
+    # clean up
     os.remove(audio_filename+".mp3")
     os.remove(audio_filename+"_mono.mp3")
 
+    # summarize transcript
     response = client.chat.completions.create(
         model="gpt-4-1106-preview",
         messages=[
